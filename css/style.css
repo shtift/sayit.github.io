@@ -45,7 +45,7 @@ nav.sidebar {
 }
 
 .page-body {
-    min-width: 600px;
+    width: 100%;
     min-height: 500px;
 }
 
