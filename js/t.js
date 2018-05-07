@@ -1,6 +1,6 @@
 'use strict';
 
-const dappAddress = "n1sJ6aA75RfnRgDP4fturrRDCPF2hkk24Pw";
+const dappAddress = "n1yx2oKWmQAa7Jxyvu8Y4HHW9gVCnPYycVH";
 let NebPay = require("nebpay"); 
 let nebPay = new NebPay();
 
@@ -58,6 +58,11 @@ function showLoader() {
 
 function addMessagesToContainer(messages) {
     clearMessageContainer();
+    if(!messages || messages.length == 0) {
+        let container = document.querySelector(".messages-container");
+        container.innerHTML = '<div class="no-stories">There is no stories yet. Be first!</div>';
+    }
+
     for(let msg of messages) {
         if(msg){
             addMessageToPage(msg);
@@ -76,9 +81,12 @@ function loadDailyTop() {
     nebPay.simulateCall(to, value, callFunction, callArgs, {  
         callback: function(resp){
             console.log(resp);
-            let result = JSON.parse(resp.result);
-            let messages = result.sort(compareMessagesByPrice).slice(0, 50);
-            addMessagesToContainer(messages);   
+            try {
+                let result = JSON.parse(resp.result);
+                let messages = result.sort(compareMessagesByPrice).slice(0, 50);
+                addMessagesToContainer(messages);
+            }
+            catch{}               
         }   
     });
 }
@@ -101,9 +109,12 @@ function loadWeeklyTop() {
         nebPay.simulateCall(to, value, callFunction, callArgs, {  
             callback: function(resp){
                 console.log(resp);
-                loadedDate.push(fromDate);
-                let result = JSON.parse(resp.result);
-                messages = messages.concat(result);                  
+                try {
+                    loadedDate.push(fromDate);
+                    let result = JSON.parse(resp.result);
+                    messages = messages.concat(result);  
+                }
+                catch {}                                
             }   
         });
         date -= dayMs;
@@ -139,9 +150,12 @@ function loadMonthlyTop() {
         nebPay.simulateCall(to, value, callFunction, callArgs, {  
             callback: function(resp){
                 console.log(resp);
-                loadedDate.push(fromDate);
-                let result = JSON.parse(resp.result);
-                messages = messages.concat(result);                  
+                try {
+                    loadedDate.push(fromDate);
+                    let result = JSON.parse(resp.result);
+                    messages = messages.concat(result); 
+                }
+                catch {}                                   
             }   
         });
         date -= dayMs;
