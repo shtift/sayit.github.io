@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Say it!</title>
+</head>
+<body>
+    <button class="message-status-info-toggler">About story badges</button>
+    <div class="message-status-info-popup hide">
+        <div class="overlay">
+            <div class="content">
+                    User story can have different color badges. The badge draws the user's attention to your story. The color of the badge depends on the amount of payment.
+                <table>
+                    <tr>
+                        <td>Payment (NAS)</td>
+                        <td>Badge</td>                        
+                    </tr>
+                    <tr>
+                        <td>0</td>                        
+                        <td><span class="message-importance default-importance"></td>
+                    </tr>
+                    <tr>
+                        <td>> 0</td>                        
+                        <td><span class="message-importance low-importance"></td>
+                    </tr>
+                    <tr>
+                        <td>> 2</td>                        
+                        <td><span class="message-importance middle-importance"></td>
+                    </tr>
+                    <tr>
+                        <td>> 5</td>                        
+                        <td><span class="message-importance high-importance"></td>
+                    </tr>
+                    <tr>
+                        <td>> 10</td>                        
+                        <td><span class="message-importance extra-importance"></td>
+                    </tr>            
+                </table>
+                Also, the amount of payment affects the location of your story in the day, week and month top.
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li>
+                    <a id="recentlyMessages" role="button">Recently</a>
+                </li>
+                <li>
+                    <a id="dailyTop" role="button">Daily top</a>
+                </li>
+                <li>
+                    <a id="weeklyTop" role="button">Weekly top</a>
+                </li>
+                <li>
+                    <a id="monthlyTop" role="button">Monthly top</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="page-body">
+            <div class="message-form-wrapper">
+                <div class="message-form">
+                    <textarea class="message-input" type="text" placeholder="Type your story" maxlength="550"></textarea>
+                    <button class="message-send" type="button">Say It</button>                
+                </div>
+            </div>
+            <div class="messages-container">
+                <!-- <div class="user-message">
+                    <div class="message-header">
+                        <span class="message-importance high-importance">
+                            <div class="importance-info">
+                                Author paid for this message:
+                                <div>2 NAS</div>
+                            </div>
+                        </span>
+                        <span class="message-date">10 minutes ago
+                            <div class="full-date">
+                                11.04.2018 at 12:03AM
+                            </div>
+                        </span>
+                        <span class="message-author">trydex</span>
+                    </div>    
+                    <div class="user-message-content">
+                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sed cupiditate autem reprehenderit aspernatur officiis adipisci exercitationem dignissimos labore libero debitis, alias magni vero harum quam quidem numquam, aliquam ipsam laboriosam.
+                    </div>
+                </div> -->
+            </div>
+        </div>        
+    </div>
+    <div class="noExtension hide">
+        Please install <a target="_blank" href="https://github.com/ChengOrangeJu/WebExtensionWallet">WebExtensionWallet</a>
+    </div>
+    <script>
+        document.querySelector(".message-status-info-toggler").addEventListener("click", function() {
+            document.querySelector(".message-status-info-popup").classList.toggle("hide");
+        });
+
+        document.querySelector(".message-status-info-popup .overlay").addEventListener("click", function() {
+            document.querySelector(".message-status-info-popup").classList.toggle("hide");
+        });
+
+        window.addEventListener("load", function() {
+            if(typeof(webExtensionWallet) === "undefined") {
+                document.querySelector(".noExtension").classList.remove("hide");
+            }
+        });        
+    </script> 
+    <script src=js/nebPay.js></script>     
+    <script src="js/t.js"></script>            
+</body>
+</html>
