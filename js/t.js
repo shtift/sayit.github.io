@@ -4,13 +4,20 @@ const dappAddress = "n1yx2oKWmQAa7Jxyvu8Y4HHW9gVCnPYycVH";
 let NebPay = require("nebpay"); 
 let nebPay = new NebPay();
 
-document.querySelector(".message-send").addEventListener("click", saveMessage);
-document.querySelector("#recentlyMessages").addEventListener("click", loadRecentlyMessages);
-document.querySelector("#dailyTop").addEventListener("click", loadDailyTop);
-document.querySelector("#weeklyTop").addEventListener("click", loadWeeklyTop);
-document.querySelector("#monthlyTop").addEventListener("click", loadMonthlyTop);
-loadRecentlyMessages();    
-
+ let timeout = setTimeout(function it(){
+    if(isExtensionExist !== undefined){
+        clearTimeout(timeout);
+        document.querySelector(".message-send").addEventListener("click", saveMessage);
+        document.querySelector("#recentlyMessages").addEventListener("click", loadRecentlyMessages);
+        document.querySelector("#dailyTop").addEventListener("click", loadDailyTop);
+        document.querySelector("#weeklyTop").addEventListener("click", loadWeeklyTop);
+        document.querySelector("#monthlyTop").addEventListener("click", loadMonthlyTop);
+        loadRecentlyMessages();   
+    }
+    else {
+        timeout = setTimeout(it, 200);
+    }
+}, 200);
 
 function loadRecentlyMessages() {
     selectMenuItem(0);
@@ -24,9 +31,14 @@ function loadRecentlyMessages() {
     nebPay.simulateCall(to, value, callFunction, callArgs, {  
         callback: function(resp){
             console.log(resp);
-            let result = JSON.parse(resp.result);
-            let messages = result.sort(compareMessagesByDate);
-            addMessagesToContainer(messages);
+            try{
+                let result = JSON.parse(resp.result);
+                let messages = result.sort(compareMessagesByDate);
+                addMessagesToContainer(messages);
+            }
+            catch{
+                showNoStories();
+            }
         }   
     });
 }
@@ -56,11 +68,15 @@ function showLoader() {
     container.append(div.firstChild);
 }
 
+function showNoStories() {
+    let container = document.querySelector(".messages-container");
+    container.innerHTML = '<div class="no-stories">There is no stories yet. Be first!</div>';
+}
+
 function addMessagesToContainer(messages) {
     clearMessageContainer();
     if(!messages || messages.length == 0) {
-        let container = document.querySelector(".messages-container");
-        container.innerHTML = '<div class="no-stories">There is no stories yet. Be first!</div>';
+        showNoStories();
     }
 
     for(let msg of messages) {
@@ -86,7 +102,7 @@ function loadDailyTop() {
                 let messages = result.sort(compareMessagesByPrice).slice(0, 50);
                 addMessagesToContainer(messages);
             }
-            catch{}               
+            catch{showNoStories();}            
         }   
     });
 }
@@ -114,7 +130,7 @@ function loadWeeklyTop() {
                     let result = JSON.parse(resp.result);
                     messages = messages.concat(result);  
                 }
-                catch {}                                
+                catch{showNoStories();}                              
             }   
         });
         date -= dayMs;

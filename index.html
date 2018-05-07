@@ -103,9 +103,11 @@
             document.querySelector(".message-status-info-popup").classList.toggle("hide");
         });
 
+        let isExtensionExist;
         window.addEventListener("load", function() {
-            if(typeof(webExtensionWallet) === "undefined") {
-                document.querySelector(".noExtension").classList.remove("hide");
+            isExtensionExist = typeof(webExtensionWallet) !== "undefined";
+            if(!isExtensionExist) {                
+                document.querySelector(".noExtension").classList.remove("hide");                
             }
         });        
     </script> 
